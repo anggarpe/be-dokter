@@ -2,6 +2,7 @@ package db
 
 import (
 	"docApp/config"
+	"docApp/models"
 	"fmt"
 
 	"github.com/jinzhu/gorm"
@@ -11,7 +12,7 @@ import (
 func DbConn() {
 
 	cfg := config.GetConfig()
-	connArgs := fmt.Sprintf(cfg.DbUser+"%s:%s@(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
+	connArgs := fmt.Sprintf("%s:%s@(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		cfg.DbUser, cfg.DbPassword, cfg.DbHost, cfg.DbPort, cfg.DbSchema)
 
 	db, err := gorm.Open("mysql", connArgs)
@@ -21,6 +22,9 @@ func DbConn() {
 	} else {
 		fmt.Println("Connection Successed")
 	}
+
+	//migration
+	db.AutoMigrate(&models.User{})
 
 	defer db.Close()
 }

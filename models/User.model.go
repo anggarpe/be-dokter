@@ -1,13 +1,11 @@
 package models
 
-import "github.com/labstack/echo"
-
 type User struct {
 	ID       int    `gorm:"primary_key;unique;not null" json:"id"`
 	Name     string `json:"name"`
-	Email    string `gorm:"type:varchar(100);unique_index" json:"email"`
+	Email    string `gorm:"type:varchar(100);not null;unique_index" json:"email"`
 	Password string `json:"password"`
-	Address  string `gorm:"index:addr" json:"address"`
+	Address  string `gorm:"type:text" json:"address"`
 	Phone    string `json:"phone"`
 }
 
@@ -16,5 +14,4 @@ type Login struct {
 	Password string `json:"password"`
 }
 
-func GetUser(c echo.Context) error {
-}
+type user []User
