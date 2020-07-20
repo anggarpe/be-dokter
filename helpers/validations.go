@@ -18,7 +18,7 @@ func GenerateValidationResponse(err error) (response dtos.ValidationResponse) {
 		validation := dtos.Validation{Field: field, Message: langs.GenerateValidationMessage(field, rule)}
 		validations = append(validations, validation)
 	}
-	response.Validations = validations
+	response.Validations = validation
 
 	return response
 }

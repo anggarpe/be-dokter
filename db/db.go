@@ -9,22 +9,25 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
-func DbConn() {
+func DbConn() (*gorm.DB, error){
 
 	cfg := config.GetConfig()
 	connArgs := fmt.Sprintf("%s:%s@(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		cfg.DbUser, cfg.DbPassword, cfg.DbHost, cfg.DbPort, cfg.DbSchema)
 
-	db, err := gorm.Open("mysql", connArgs)
+	db, err := gorm.Open(cfg.DbName, connArgs)
 	if err != nil {
 		fmt.Println(err)
-		return
-	} else {
-		fmt.Println("Connection Successed")
+		return nil, err
 	}
+	fmt.Println("Connection Successed")
+
 
 	//migration
 	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.Admin{})
 
-	defer db.Close()
+
+	//defer db.Close()
+	return db, nil
 }

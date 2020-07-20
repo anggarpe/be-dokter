@@ -2,10 +2,26 @@ package main
 
 import (
 	"docApp/db"
+	"docApp/routes"
 	"fmt"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 )
 
 func main() {
 	db.DbConn()
-	fmt.Println("kkk")
+	e := routes.InitRoute()
+	fmt.Println("Starting Server...")
+
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{echo.PUT, echo.GET, echo.POST, echo.DELETE},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+		AllowCredentials: true,
+	}))
+
+	e.Logger.Fatal(e.Start(":8000"))
 }
