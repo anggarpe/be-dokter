@@ -23,9 +23,38 @@ func DbConn() (*gorm.DB, error){
 	fmt.Println("Connection Successed")
 
 
-	//migration
-	db.AutoMigrate(&models.User{})
-	db.AutoMigrate(&models.Admin{})
+	//db.DropTableIfExists(
+	//	&models.User{},
+	//	&models.Admin{},
+	//	&models.Services{},
+	//	&models.Reservation{},
+	//	&models.Variety{},
+	//	&models.Doctor{},
+	//	&models.Schedule{},
+	//	&models.Product{},
+	//	&models.Category{},
+	//	&models.OrderDetail{},
+	//	&models.Order{},
+	//)
+
+	//create
+	db.AutoMigrate(
+		&models.User{},
+		&models.Admin{},
+		&models.Services{},
+		&models.Reservation{},
+		&models.Variety{},
+		&models.Doctor{},
+		&models.Schedule{},
+		&models.Product{},
+		&models.Category{},
+		&models.OrderDetail{},
+		&models.Order{},
+	)
+
+	//constraint
+	//CreateConstraint(db)
+
 
 
 	//defer db.Close()

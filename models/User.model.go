@@ -1,12 +1,14 @@
 package models
 
 type User struct {
-	ID       string  `gorm:"primary_key;unique;not null" json:"id"`
+	ID       uint  `gorm:"type:int(5);primary_key;unique;not null" json:"id"`
 	Name     string `gorm:"not null" json:"name" binding:"required"`
 	Email    string `gorm:"type:varchar(100);not null;unique_index" json:"email"`
 	Password string `json:"password"`
 	Address  string `gorm:"type:text" json:"address"`
-	Phone    string `json:"phone"`
+	Phone    string `gorm:"type:varchar(12)" json:"phone"`
+	Order []Order `json:"-"`
+	Reservation []Reservation `json:"-"`
 }
 
 type Login struct {

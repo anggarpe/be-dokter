@@ -7,8 +7,6 @@ import (
 
 	"docApp/dtos"
 	"docApp/repositories"
-
-	"github.com/google/uuid"
 )
 
 func FindById(id string) dtos.Response {
@@ -27,11 +25,11 @@ func FindById(id string) dtos.Response {
 func CreateUser(user *models.User) dtos.Response {
 	var repo repositories.UserRepo
 
-	uuidResult, err := uuid.NewRandom()
-	if err != nil {
-		log.Fatalln(err)
-	}
-	user.ID = uuidResult.String()
+	//uuidResult, err := uuid.NewRandom()
+	//if err != nil {
+	//	log.Fatalln(err)
+	//}
+	//user.ID = uuidResult.String()
 
 	operationResult := repo.Create(user)
 
