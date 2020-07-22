@@ -10,21 +10,21 @@ import (
 	"net/http"
 )
 
-type UserController struct {}
-var servUser service.UserService
+type VarietyController struct {}
+var varietyService service.VarietyService
 
-func (*UserController) FindById(c echo.Context) error {
+func (*VarietyController) FindById(c echo.Context) error {
 	id := c.Param("id")
-	return c.JSON(http.StatusOK, servUser.FindById(id))
+	return c.JSON(http.StatusOK, varietyService.FindById(id))
 }
 
-func (*UserController) FindAll(c echo.Context) error {
-	res := servUser.FindAll()
+func (*VarietyController) FindAll(c echo.Context) error {
+	res := varietyService.FindAll()
 	return c.JSON(http.StatusOK, res)
 }
 
-func (*UserController) Create(c echo.Context) error {
-	var user *models.User
+func (*VarietyController) Create(c echo.Context) error {
+	var variety *models.Variety
 	defer c.Request().Body.Close()
 
 	b, err := ioutil.ReadAll(c.Request().Body)
@@ -33,19 +33,19 @@ func (*UserController) Create(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, "")
 	}
 
-	err = json.Unmarshal(b, &user)
+	err = json.Unmarshal(b, &variety)
 	if err != nil{
 		log.Printf("Failed Unmarshall in Create User: %s", err)
 		return c.String(http.StatusInternalServerError, "")
 	}
 
-	res := servUser.Create(user)
-	log.Printf("User created: %#v", user)
+	res := varietyService.Create(variety)
+	log.Printf("User created: %#v", variety)
 	return c.JSON(http.StatusOK, res)
 }
 
-func (*UserController) Update(c echo.Context) error {
-	var user *models.User
+func (*VarietyController) Update(c echo.Context) error {
+	var variety *models.Variety
 	defer c.Request().Body.Close()
 
 	b, err := ioutil.ReadAll(c.Request().Body)
@@ -54,22 +54,19 @@ func (*UserController) Update(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, "")
 	}
 
-	err = json.Unmarshal(b, &user)
+	err = json.Unmarshal(b, &variety)
 	if err != nil{
 		log.Printf("Failed Unmarshall in Create User: %s", err)
 		return c.String(http.StatusInternalServerError, "")
 	}
 
-	res := servUser.Update(user)
-	log.Printf("User updated: %#v", user)
+	res := varietyService.Update(variety)
+	log.Printf("User updated: %#v", variety)
 	return c.JSON(http.StatusOK, res)
 
 }
 
-func (*UserController) Delete(c echo.Context) error {
+func (*VarietyController) Delete(c echo.Context) error {
 	id := c.Param("id")
-	return c.JSON(http.StatusOK, servUser.Delete(id))
+	return c.JSON(http.StatusOK, varietyService.Delete(id))
 }
-
-
-

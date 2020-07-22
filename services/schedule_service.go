@@ -1,21 +1,18 @@
 package service
 
 import (
+	"docApp/dtos"
 	"docApp/models"
+	"docApp/repositories"
 	"fmt"
 	"log"
-
-	"docApp/dtos"
-	"docApp/repositories"
 )
-var repoUser repositories.UserRepo
 
-type UserService struct {
-}
+var repoSchedule repositories.ScheduleRepo
+type ScheduleService struct {}
 
-
-func (*UserService) FindById(id string) dtos.Response {
-	operationResult := repoUser.FindById(id)
+func (*ScheduleService) FindById(id string) dtos.Response {
+	operationResult := repoSchedule.FindById(id)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: "Can't find id"}
@@ -25,55 +22,48 @@ func (*UserService) FindById(id string) dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*UserService) Create(user *models.User) dtos.Response {
-
-	//uuidResult, err := uuid.NewRandom()
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-	//user.ID = uuidResult
-
-	operationResult := repoUser.Create(user)
+func (*ScheduleService) Create(schedule *models.Schedule) dtos.Response {
+	operationResult := repoSchedule.Create(schedule)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
 	}
 
-	var data = operationResult.Result.(*models.User)
+	var data = operationResult.Result.(*models.Schedule)
 
 	log.Printf("data at file service: %#v", data)
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*UserService) FindAll() dtos.Response {
-	operationResult := repoUser.FindAll()
+func (*ScheduleService) FindAll() dtos.Response {
+	operationResult := repoSchedule.FindAll()
 
 	if operationResult.Error != nil {
-		fmt.Println("file service user error")
+		fmt.Println("file service schedule error")
 		log.Println("File service oiiii")
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
-		}
+	}
 
 
 	log.Println("Success get data")
-	var data = operationResult
+	var data = operationResult.Result
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*UserService) Update(user *models.User) dtos.Response {
-	operationResult := repoUser.Update(user)
+func (*ScheduleService) Update(schedule *models.Schedule) dtos.Response {
+	operationResult := repoSchedule.Update(schedule)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: true, Message: "failed update"}
 	}
 
-	var data = operationResult.Result.(*models.User)
+	var data = operationResult.Result.(*models.Schedule)
 	return dtos.Response{Success: true, Data: data}
 
 }
 
-func (*UserService) Delete(id string) dtos.Response {
-	err := repoUser.Delete(id)
+func (*ScheduleService) Delete(id string) dtos.Response {
+	err := repoSchedule.Delete(id)
 	if err.Error != nil{
 		return dtos.Response{Success: false, Message: "Failed delete"}
 	}
@@ -81,5 +71,3 @@ func (*UserService) Delete(id string) dtos.Response {
 	log.Print("Success Delete")
 	return dtos.Response{Success: true, Message: "Success delete"}
 }
-
-

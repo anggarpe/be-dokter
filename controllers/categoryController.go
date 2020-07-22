@@ -10,21 +10,21 @@ import (
 	"net/http"
 )
 
-type UserController struct {}
-var servUser service.UserService
+type CategoryController struct {}
+var categoryService service.CategoryService
 
-func (*UserController) FindById(c echo.Context) error {
+func (*CategoryController) FindById(c echo.Context) error {
 	id := c.Param("id")
-	return c.JSON(http.StatusOK, servUser.FindById(id))
+	return c.JSON(http.StatusOK, categoryService.FindById(id))
 }
 
-func (*UserController) FindAll(c echo.Context) error {
-	res := servUser.FindAll()
+func (*CategoryController) FindAll(c echo.Context) error {
+	res := categoryService.FindAll()
 	return c.JSON(http.StatusOK, res)
 }
 
-func (*UserController) Create(c echo.Context) error {
-	var user *models.User
+func (*CategoryController) Create(c echo.Context) error {
+	var category *models.Category
 	defer c.Request().Body.Close()
 
 	b, err := ioutil.ReadAll(c.Request().Body)
@@ -33,19 +33,19 @@ func (*UserController) Create(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, "")
 	}
 
-	err = json.Unmarshal(b, &user)
+	err = json.Unmarshal(b, &category)
 	if err != nil{
 		log.Printf("Failed Unmarshall in Create User: %s", err)
 		return c.String(http.StatusInternalServerError, "")
 	}
 
-	res := servUser.Create(user)
-	log.Printf("User created: %#v", user)
+	res := categoryService.Create(category)
+	log.Printf("User created: %#v", category)
 	return c.JSON(http.StatusOK, res)
 }
 
-func (*UserController) Update(c echo.Context) error {
-	var user *models.User
+func (*CategoryController) Update(c echo.Context) error {
+	var category *models.Category
 	defer c.Request().Body.Close()
 
 	b, err := ioutil.ReadAll(c.Request().Body)
@@ -54,22 +54,19 @@ func (*UserController) Update(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, "")
 	}
 
-	err = json.Unmarshal(b, &user)
+	err = json.Unmarshal(b, &category)
 	if err != nil{
 		log.Printf("Failed Unmarshall in Create User: %s", err)
 		return c.String(http.StatusInternalServerError, "")
 	}
 
-	res := servUser.Update(user)
-	log.Printf("User updated: %#v", user)
+	res := categoryService.Update(category)
+	log.Printf("User updated: %#v", category)
 	return c.JSON(http.StatusOK, res)
 
 }
 
-func (*UserController) Delete(c echo.Context) error {
+func (*CategoryController) Delete(c echo.Context) error {
 	id := c.Param("id")
-	return c.JSON(http.StatusOK, servUser.Delete(id))
+	return c.JSON(http.StatusOK, categoryService.Delete(id))
 }
-
-
-

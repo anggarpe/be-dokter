@@ -10,21 +10,21 @@ import (
 	"net/http"
 )
 
-type UserController struct {}
-var servUser service.UserService
+type OrderController struct {}
+var servOrder service.OrderService
 
-func (*UserController) FindById(c echo.Context) error {
+func (*OrderController) FindById(c echo.Context) error {
 	id := c.Param("id")
-	return c.JSON(http.StatusOK, servUser.FindById(id))
+	return c.JSON(http.StatusOK, servOrder.FindById(id))
 }
 
-func (*UserController) FindAll(c echo.Context) error {
-	res := servUser.FindAll()
+func (*OrderController) FindAll(c echo.Context) error {
+	res := servOrder.FindAll()
 	return c.JSON(http.StatusOK, res)
 }
 
-func (*UserController) Create(c echo.Context) error {
-	var user *models.User
+func (*OrderController) Create(c echo.Context) error {
+	var order *models.Order
 	defer c.Request().Body.Close()
 
 	b, err := ioutil.ReadAll(c.Request().Body)
@@ -33,19 +33,19 @@ func (*UserController) Create(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, "")
 	}
 
-	err = json.Unmarshal(b, &user)
+	err = json.Unmarshal(b, &order)
 	if err != nil{
-		log.Printf("Failed Unmarshall in Create User: %s", err)
+		log.Printf("Failed Unmarshall in Create Order: %s", err)
 		return c.String(http.StatusInternalServerError, "")
 	}
 
-	res := servUser.Create(user)
-	log.Printf("User created: %#v", user)
+	res := servOrder.Create(order)
+	log.Printf("Order created: %#v", order)
 	return c.JSON(http.StatusOK, res)
 }
 
-func (*UserController) Update(c echo.Context) error {
-	var user *models.User
+func (*OrderController) Update(c echo.Context) error {
+	var order *models.Order
 	defer c.Request().Body.Close()
 
 	b, err := ioutil.ReadAll(c.Request().Body)
@@ -54,21 +54,21 @@ func (*UserController) Update(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, "")
 	}
 
-	err = json.Unmarshal(b, &user)
+	err = json.Unmarshal(b, &order)
 	if err != nil{
-		log.Printf("Failed Unmarshall in Create User: %s", err)
+		log.Printf("Failed Unmarshall in Create Order: %s", err)
 		return c.String(http.StatusInternalServerError, "")
 	}
 
-	res := servUser.Update(user)
-	log.Printf("User updated: %#v", user)
+	res := servOrder.Update(order)
+	log.Printf("Order updated: %#v", order)
 	return c.JSON(http.StatusOK, res)
 
 }
 
-func (*UserController) Delete(c echo.Context) error {
+func (*OrderController) Delete(c echo.Context) error {
 	id := c.Param("id")
-	return c.JSON(http.StatusOK, servUser.Delete(id))
+	return c.JSON(http.StatusOK, servOrder.Delete(id))
 }
 
 

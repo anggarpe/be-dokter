@@ -6,6 +6,7 @@ type Product struct {
 	Price float64 `gorm:"type:double" json:"price"`
 	Stock int32 `gorm:"type:int" json:"stock"`
 	Description string `gorm:"type:text" json:"description"`
-	Category []Category `gorm:"many2many:product_category"`
-	OrderDetail []OrderDetail
+	CategoryID uint `sql:"index" json:"-"`
+	Category Category `json:"category"`
+	OrderDetail []OrderDetail `json:"-"`
 }

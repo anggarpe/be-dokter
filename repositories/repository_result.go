@@ -1,6 +1,6 @@
 package repositories
 
 type RepositoryResult struct {
-	Result interface{}
-	Error  error
+	Result interface{} `json:"result"`
+	Error  error	`json:"error"`
 }

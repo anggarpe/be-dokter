@@ -5,5 +5,5 @@ type Doctor struct {
 	Name     string `gorm:"not null" json:"name" binding:"required"`
 	Email    string `gorm:"type:varchar(100);not null;unique_index" json:"email"`
 	Phone    string `gorm:"type:varchar(12)" json:"phone"`
-	Schedule []Schedule  `json:"-"`
+	Schedule []Schedule  `gorm:"foreign_key:DoctorID" json:"schedule"`
 }

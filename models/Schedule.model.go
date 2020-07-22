@@ -5,5 +5,6 @@ type Schedule struct {
 	Day       string `gorm:"not null" json:"day"`
 	HourStart string `json:"FromHour"`
 	HourEnd   string `json:"ToHour"`
-	DoctorID  uint   `sql:"index" json:"idDoctor"`
+	DoctorID  uint `json:"-"`
+	Doctor Doctor `gorm:"association_autoupdate:false" json:"doctor"`
 }

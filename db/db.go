@@ -2,7 +2,6 @@ package db
 
 import (
 	"docApp/config"
-	"docApp/models"
 	"fmt"
 
 	"github.com/jinzhu/gorm"
@@ -38,19 +37,19 @@ func DbConn() (*gorm.DB, error){
 	//)
 
 	//create
-	db.AutoMigrate(
-		&models.User{},
-		&models.Admin{},
-		&models.Services{},
-		&models.Reservation{},
-		&models.Variety{},
-		&models.Doctor{},
-		&models.Schedule{},
-		&models.Product{},
-		&models.Category{},
-		&models.OrderDetail{},
-		&models.Order{},
-	)
+	//db.AutoMigrate(
+	//	&models.User{},
+	//	&models.Admin{},
+	//	&models.Services{},
+	//	&models.Reservation{},
+	//	&models.Variety{},
+	//	&models.Doctor{},
+	//	&models.Schedule{},
+	//	&models.Product{},
+	//	&models.Category{},
+	//	&models.OrderDetail{},
+	//	&models.Order{},
+	//)
 
 	//constraint
 	//CreateConstraint(db)

@@ -1,21 +1,18 @@
 package service
 
 import (
+	"docApp/dtos"
 	"docApp/models"
+	"docApp/repositories"
 	"fmt"
 	"log"
-
-	"docApp/dtos"
-	"docApp/repositories"
 )
-var repoUser repositories.UserRepo
 
-type UserService struct {
-}
+var repoDoctor repositories.DoctorRepo
+type DoctorService struct {}
 
-
-func (*UserService) FindById(id string) dtos.Response {
-	operationResult := repoUser.FindById(id)
+func (*DoctorService) FindById(id string) dtos.Response {
+	operationResult := repoDoctor.FindById(id)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: "Can't find id"}
@@ -25,34 +22,27 @@ func (*UserService) FindById(id string) dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*UserService) Create(user *models.User) dtos.Response {
-
-	//uuidResult, err := uuid.NewRandom()
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-	//user.ID = uuidResult
-
-	operationResult := repoUser.Create(user)
+func (*DoctorService) Create(doctor *models.Doctor) dtos.Response {
+	operationResult := repoDoctor.Create(doctor)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
 	}
 
-	var data = operationResult.Result.(*models.User)
+	var data = operationResult.Result.(*models.Doctor)
 
 	log.Printf("data at file service: %#v", data)
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*UserService) FindAll() dtos.Response {
-	operationResult := repoUser.FindAll()
+func (*DoctorService) FindAll() dtos.Response {
+	operationResult := repoDoctor.FindAll()
 
 	if operationResult.Error != nil {
-		fmt.Println("file service user error")
+		fmt.Println("file service doctor error")
 		log.Println("File service oiiii")
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
-		}
+	}
 
 
 	log.Println("Success get data")
@@ -60,20 +50,20 @@ func (*UserService) FindAll() dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*UserService) Update(user *models.User) dtos.Response {
-	operationResult := repoUser.Update(user)
+func (*DoctorService) Update(doctor *models.Doctor) dtos.Response {
+	operationResult := repoDoctor.Update(doctor)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: true, Message: "failed update"}
 	}
 
-	var data = operationResult.Result.(*models.User)
+	var data = operationResult.Result.(*models.Doctor)
 	return dtos.Response{Success: true, Data: data}
 
 }
 
-func (*UserService) Delete(id string) dtos.Response {
-	err := repoUser.Delete(id)
+func (*DoctorService) Delete(id string) dtos.Response {
+	err := repoDoctor.Delete(id)
 	if err.Error != nil{
 		return dtos.Response{Success: false, Message: "Failed delete"}
 	}
@@ -81,5 +71,3 @@ func (*UserService) Delete(id string) dtos.Response {
 	log.Print("Success Delete")
 	return dtos.Response{Success: true, Message: "Success delete"}
 }
-
-

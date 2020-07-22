@@ -4,5 +4,5 @@
     "DbPassword":"password",
     "DbHost":"127.0.0.1",
     "DbPort":"3307",
-    "DbSchema":"dokter_db"
+    "DbSchema":"veterinary_db"
 }

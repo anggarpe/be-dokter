@@ -7,5 +7,11 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3307/dokter_db</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="veterinary_db@localhost" uuid="49648177-9632-44e0-913b-b259af8f5219">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3307/veterinary_db</jdbc-url>
+    </data-source>
   </component>
 </project>

@@ -8,14 +8,14 @@ import (
 	"docApp/dtos"
 	"docApp/repositories"
 )
-var repoUser repositories.UserRepo
+var repoReservation repositories.ReservationRepo
 
-type UserService struct {
+type ReservationService struct {
 }
 
 
-func (*UserService) FindById(id string) dtos.Response {
-	operationResult := repoUser.FindById(id)
+func (*ReservationService) FindById(id string) dtos.Response {
+	operationResult := repoReservation.FindById(id)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: "Can't find id"}
@@ -25,34 +25,34 @@ func (*UserService) FindById(id string) dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*UserService) Create(user *models.User) dtos.Response {
+func (*ReservationService) Create(reservation *models.Reservation) dtos.Response {
 
 	//uuidResult, err := uuid.NewRandom()
 	//if err != nil {
 	//	log.Fatalln(err)
 	//}
-	//user.ID = uuidResult
+	//reservation.ID = uuidResult
 
-	operationResult := repoUser.Create(user)
+	operationResult := repoReservation.Create(reservation)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
 	}
 
-	var data = operationResult.Result.(*models.User)
+	var data = operationResult.Result.(*models.Reservation)
 
 	log.Printf("data at file service: %#v", data)
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*UserService) FindAll() dtos.Response {
-	operationResult := repoUser.FindAll()
+func (*ReservationService) FindAll() dtos.Response {
+	operationResult := repoReservation.FindAll()
 
 	if operationResult.Error != nil {
-		fmt.Println("file service user error")
+		fmt.Println("file service reservation error")
 		log.Println("File service oiiii")
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
-		}
+	}
 
 
 	log.Println("Success get data")
@@ -60,20 +60,20 @@ func (*UserService) FindAll() dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*UserService) Update(user *models.User) dtos.Response {
-	operationResult := repoUser.Update(user)
+func (*ReservationService) Update(reservation *models.Reservation) dtos.Response {
+	operationResult := repoReservation.Update(reservation)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: true, Message: "failed update"}
 	}
 
-	var data = operationResult.Result.(*models.User)
+	var data = operationResult.Result.(*models.Reservation)
 	return dtos.Response{Success: true, Data: data}
 
 }
 
-func (*UserService) Delete(id string) dtos.Response {
-	err := repoUser.Delete(id)
+func (*ReservationService) Delete(id string) dtos.Response {
+	err := repoReservation.Delete(id)
 	if err.Error != nil{
 		return dtos.Response{Success: false, Message: "Failed delete"}
 	}

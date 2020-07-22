@@ -8,14 +8,14 @@ import (
 	"docApp/dtos"
 	"docApp/repositories"
 )
-var repoUser repositories.UserRepo
+var repoOrder repositories.OrderRepo
 
-type UserService struct {
+type OrderService struct {
 }
 
 
-func (*UserService) FindById(id string) dtos.Response {
-	operationResult := repoUser.FindById(id)
+func (*OrderService) FindById(id string) dtos.Response {
+	operationResult := repoOrder.FindById(id)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: "Can't find id"}
@@ -25,34 +25,34 @@ func (*UserService) FindById(id string) dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*UserService) Create(user *models.User) dtos.Response {
+func (*OrderService) Create(order *models.Order) dtos.Response {
 
 	//uuidResult, err := uuid.NewRandom()
 	//if err != nil {
 	//	log.Fatalln(err)
 	//}
-	//user.ID = uuidResult
+	//order.ID = uuidResult
 
-	operationResult := repoUser.Create(user)
+	operationResult := repoOrder.Create(order)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
 	}
 
-	var data = operationResult.Result.(*models.User)
+	var data = operationResult.Result.(*models.Order)
 
 	log.Printf("data at file service: %#v", data)
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*UserService) FindAll() dtos.Response {
-	operationResult := repoUser.FindAll()
+func (*OrderService) FindAll() dtos.Response {
+	operationResult := repoOrder.FindAll()
 
 	if operationResult.Error != nil {
-		fmt.Println("file service user error")
+		fmt.Println("file service order error")
 		log.Println("File service oiiii")
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
-		}
+	}
 
 
 	log.Println("Success get data")
@@ -60,20 +60,20 @@ func (*UserService) FindAll() dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*UserService) Update(user *models.User) dtos.Response {
-	operationResult := repoUser.Update(user)
+func (*OrderService) Update(order *models.Order) dtos.Response {
+	operationResult := repoOrder.Update(order)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: true, Message: "failed update"}
 	}
 
-	var data = operationResult.Result.(*models.User)
+	var data = operationResult.Result.(*models.Order)
 	return dtos.Response{Success: true, Data: data}
 
 }
 
-func (*UserService) Delete(id string) dtos.Response {
-	err := repoUser.Delete(id)
+func (*OrderService) Delete(id string) dtos.Response {
+	err := repoOrder.Delete(id)
 	if err.Error != nil{
 		return dtos.Response{Success: false, Message: "Failed delete"}
 	}

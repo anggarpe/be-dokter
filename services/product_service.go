@@ -1,21 +1,18 @@
 package service
 
 import (
+	"docApp/dtos"
 	"docApp/models"
+	"docApp/repositories"
 	"fmt"
 	"log"
-
-	"docApp/dtos"
-	"docApp/repositories"
 )
-var repoUser repositories.UserRepo
 
-type UserService struct {
-}
+var repoProduct repositories.ProductRepo
+type ProductService struct {}
 
-
-func (*UserService) FindById(id string) dtos.Response {
-	operationResult := repoUser.FindById(id)
+func (*ProductService) FindById(id string) dtos.Response {
+	operationResult := repoProduct.FindById(id)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: "Can't find id"}
@@ -25,34 +22,27 @@ func (*UserService) FindById(id string) dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*UserService) Create(user *models.User) dtos.Response {
-
-	//uuidResult, err := uuid.NewRandom()
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-	//user.ID = uuidResult
-
-	operationResult := repoUser.Create(user)
+func (*ProductService) Create(product *models.Product) dtos.Response {
+	operationResult := repoProduct.Create(product)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
 	}
 
-	var data = operationResult.Result.(*models.User)
+	var data = operationResult.Result.(*models.Product)
 
 	log.Printf("data at file service: %#v", data)
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*UserService) FindAll() dtos.Response {
-	operationResult := repoUser.FindAll()
+func (*ProductService) FindAll() dtos.Response {
+	operationResult := repoProduct.FindAll()
 
 	if operationResult.Error != nil {
-		fmt.Println("file service user error")
+		fmt.Println("file service product error")
 		log.Println("File service oiiii")
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
-		}
+	}
 
 
 	log.Println("Success get data")
@@ -60,20 +50,20 @@ func (*UserService) FindAll() dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*UserService) Update(user *models.User) dtos.Response {
-	operationResult := repoUser.Update(user)
+func (*ProductService) Update(product *models.Product) dtos.Response {
+	operationResult := repoProduct.Update(product)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: true, Message: "failed update"}
 	}
 
-	var data = operationResult.Result.(*models.User)
+	var data = operationResult.Result.(*models.Product)
 	return dtos.Response{Success: true, Data: data}
 
 }
 
-func (*UserService) Delete(id string) dtos.Response {
-	err := repoUser.Delete(id)
+func (*ProductService) Delete(id string) dtos.Response {
+	err := repoProduct.Delete(id)
 	if err.Error != nil{
 		return dtos.Response{Success: false, Message: "Failed delete"}
 	}
@@ -81,5 +71,3 @@ func (*UserService) Delete(id string) dtos.Response {
 	log.Print("Success Delete")
 	return dtos.Response{Success: true, Message: "Success delete"}
 }
-
-

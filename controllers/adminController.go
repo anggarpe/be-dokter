@@ -10,21 +10,21 @@ import (
 	"net/http"
 )
 
-type UserController struct {}
-var servUser service.UserService
+type AdminController struct {}
+var adminServ service.AdminService
 
-func (*UserController) FindById(c echo.Context) error {
+func (*AdminController) FindById(c echo.Context) error {
 	id := c.Param("id")
-	return c.JSON(http.StatusOK, servUser.FindById(id))
+	return c.JSON(http.StatusOK, adminServ.FindById(id))
 }
 
-func (*UserController) FindAll(c echo.Context) error {
-	res := servUser.FindAll()
+func (*AdminController) FindAll(c echo.Context) error {
+	res := adminServ.FindAll()
 	return c.JSON(http.StatusOK, res)
 }
 
-func (*UserController) Create(c echo.Context) error {
-	var user *models.User
+func (*AdminController) Create(c echo.Context) error {
+	var user *models.Admin
 	defer c.Request().Body.Close()
 
 	b, err := ioutil.ReadAll(c.Request().Body)
@@ -39,13 +39,13 @@ func (*UserController) Create(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, "")
 	}
 
-	res := servUser.Create(user)
+	res := adminServ.Create(user)
 	log.Printf("User created: %#v", user)
 	return c.JSON(http.StatusOK, res)
 }
 
-func (*UserController) Update(c echo.Context) error {
-	var user *models.User
+func (*AdminController) Update(c echo.Context) error {
+	var user *models.Admin
 	defer c.Request().Body.Close()
 
 	b, err := ioutil.ReadAll(c.Request().Body)
@@ -60,16 +60,13 @@ func (*UserController) Update(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, "")
 	}
 
-	res := servUser.Update(user)
+	res := adminServ.Update(user)
 	log.Printf("User updated: %#v", user)
 	return c.JSON(http.StatusOK, res)
 
 }
 
-func (*UserController) Delete(c echo.Context) error {
+func (*AdminController) Delete(c echo.Context) error {
 	id := c.Param("id")
-	return c.JSON(http.StatusOK, servUser.Delete(id))
+	return c.JSON(http.StatusOK, adminServ.Delete(id))
 }
-
-
-
