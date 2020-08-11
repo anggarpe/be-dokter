@@ -1,19 +1,21 @@
-package service
+package servicess
 
 import (
-	"docApp/dtos"
 	"docApp/models"
-	"docApp/repositories"
 	"fmt"
 	"log"
+
+	"docApp/dtos"
+	"docApp/repositories"
 )
+var repoReservation repositories.ReservationRepo
+
+type ReservationService struct {
+}
 
 
-var repoAdmin repositories.AdminRepo
-type AdminService struct {}
-
-func (*AdminService) FindById(id string) dtos.Response {
-	operationResult := repoAdmin.FindById(id)
+func (*ReservationService) FindById(id string) dtos.Response {
+	operationResult := repoReservation.FindById(id)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: "Can't find id"}
@@ -23,24 +25,31 @@ func (*AdminService) FindById(id string) dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*AdminService) Create(user *models.Admin) dtos.Response {
-	operationResult := repoAdmin.Create(user)
+func (*ReservationService) Create(reservation *models.Reservation) dtos.Response {
+
+	//uuidResult, err := uuid.NewRandom()
+	//if err != nil {
+	//	log.Fatalln(err)
+	//}
+	//reservation.ID = uuidResult
+
+	operationResult := repoReservation.Create(reservation)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
 	}
 
-	var data = operationResult.Result.(*models.Admin)
+	var data = operationResult.Result.(*models.Reservation)
 
 	log.Printf("data at file service: %#v", data)
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*AdminService) FindAll() dtos.Response {
-	operationResult := repoAdmin.FindAll()
+func (*ReservationService) FindAll() dtos.Response {
+	operationResult := repoReservation.FindAll()
 
 	if operationResult.Error != nil {
-		fmt.Println("file service user error")
+		fmt.Println("file service reservation error")
 		log.Println("File service oiiii")
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
 	}
@@ -51,20 +60,20 @@ func (*AdminService) FindAll() dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*AdminService) Update(user *models.Admin) dtos.Response {
-	operationResult := repoAdmin.Update(user)
+func (*ReservationService) Update(reservation *models.Reservation) dtos.Response {
+	operationResult := repoReservation.Update(reservation)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: true, Message: "failed update"}
 	}
 
-	var data = operationResult.Result.(*models.Admin)
+	var data = operationResult.Result.(*models.Reservation)
 	return dtos.Response{Success: true, Data: data}
 
 }
 
-func (*AdminService) Delete(id string) dtos.Response {
-	err := repoAdmin.Delete(id)
+func (*ReservationService) Delete(id string) dtos.Response {
+	err := repoReservation.Delete(id)
 	if err.Error != nil{
 		return dtos.Response{Success: false, Message: "Failed delete"}
 	}
@@ -72,3 +81,5 @@ func (*AdminService) Delete(id string) dtos.Response {
 	log.Print("Success Delete")
 	return dtos.Response{Success: true, Message: "Success delete"}
 }
+
+

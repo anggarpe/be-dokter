@@ -14,9 +14,9 @@ func NewScheduleRepo(db *gorm.DB) *ScheduleRepo {
 	return &ScheduleRepo{Db: db}
 }
 
+var schedules []models.Schedule
 func (r *ScheduleRepo) FindById(id string) RepositoryResult {
 	db, err := db2.DbConn()
-	var schedules []models.Schedule
 
 	if err != nil{
 		return RepositoryResult{Error: err}
@@ -41,7 +41,6 @@ func (r *ScheduleRepo) Create(schedule *models.Schedule) RepositoryResult {
 
 func (r *ScheduleRepo) FindAll() RepositoryResult {
 	db, err := db2.DbConn()
-	var schedules []models.Schedule
 	if err != nil {
 		return RepositoryResult{Error: err}
 	}

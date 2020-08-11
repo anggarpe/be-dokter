@@ -1,4 +1,4 @@
-package service
+package servicess
 
 import (
 	"docApp/dtos"
@@ -8,11 +8,11 @@ import (
 	"log"
 )
 
-var repoProduct repositories.ProductRepo
-type ProductService struct {}
+var repoDoctor repositories.DoctorRepo
+type DoctorService struct {}
 
-func (*ProductService) FindById(id string) dtos.Response {
-	operationResult := repoProduct.FindById(id)
+func (*DoctorService) FindById(id string) dtos.Response {
+	operationResult := repoDoctor.FindById(id)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: "Can't find id"}
@@ -22,24 +22,24 @@ func (*ProductService) FindById(id string) dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*ProductService) Create(product *models.Product) dtos.Response {
-	operationResult := repoProduct.Create(product)
+func (*DoctorService) Create(doctor *models.Doctor) dtos.Response {
+	operationResult := repoDoctor.Create(doctor)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
 	}
 
-	var data = operationResult.Result.(*models.Product)
+	var data = operationResult.Result.(*models.Doctor)
 
 	log.Printf("data at file service: %#v", data)
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*ProductService) FindAll() dtos.Response {
-	operationResult := repoProduct.FindAll()
+func (*DoctorService) FindAll() dtos.Response {
+	operationResult := repoDoctor.FindAll()
 
 	if operationResult.Error != nil {
-		fmt.Println("file service product error")
+		fmt.Println("file service doctor error")
 		log.Println("File service oiiii")
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
 	}
@@ -50,20 +50,20 @@ func (*ProductService) FindAll() dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*ProductService) Update(product *models.Product) dtos.Response {
-	operationResult := repoProduct.Update(product)
+func (*DoctorService) Update(doctor *models.Doctor) dtos.Response {
+	operationResult := repoDoctor.Update(doctor)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: true, Message: "failed update"}
 	}
 
-	var data = operationResult.Result.(*models.Product)
+	var data = operationResult.Result.(*models.Doctor)
 	return dtos.Response{Success: true, Data: data}
 
 }
 
-func (*ProductService) Delete(id string) dtos.Response {
-	err := repoProduct.Delete(id)
+func (*DoctorService) Delete(id string) dtos.Response {
+	err := repoDoctor.Delete(id)
 	if err.Error != nil{
 		return dtos.Response{Success: false, Message: "Failed delete"}
 	}

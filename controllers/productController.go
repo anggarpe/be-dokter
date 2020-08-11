@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"docApp/models"
-	service "docApp/services"
+	service "docApp/servicess"
 	"encoding/json"
 	"github.com/labstack/echo"
 	"io/ioutil"
@@ -69,4 +69,9 @@ func (*ProductController) Update(c echo.Context) error {
 func (*ProductController) Delete(c echo.Context) error {
 	id := c.Param("id")
 	return c.JSON(http.StatusOK, productService.Delete(id))
+}
+
+func (*ProductController) Search(c echo.Context) error {
+	name := c.Param("name")
+	return c.JSON(http.StatusOK, productService.Search(name))
 }

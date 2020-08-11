@@ -14,9 +14,10 @@ func NewServiceRepo(db *gorm.DB) *ServiceRepo {
 	return &ServiceRepo{Db: db}
 }
 
+var services []models.Services
+
 func (r *ServiceRepo) FindById(id string) RepositoryResult {
 	db, err := db2.DbConn()
-	var services []models.Services
 
 	if err != nil{
 		return RepositoryResult{Error: err}
@@ -44,7 +45,6 @@ func (r *ServiceRepo) FindAll() RepositoryResult {
 	if err != nil {
 		return RepositoryResult{Error: err}
 	}else {
-		var services []models.Services
 		db.Find(&services)
 		return RepositoryResult{Result: services}
 	}
@@ -62,12 +62,22 @@ func (r *ServiceRepo) Update(service *models.Services) RepositoryResult {
 
 func (*ServiceRepo) Delete(id string) RepositoryResult {
 	db, err := db2.DbConn()
-	var service []models.Services
-
 	if err != nil {
 		return RepositoryResult{Error: err}
 	}
 
-	db.Where("id = ?", id).Delete(&service)
+	db.Where("id = ?", id).Delete(&services)
 	return RepositoryResult{Result: db.RowsAffected}
+}
+
+func (*ServiceRepo) FindByName(name string) RepositoryResult {
+	db, err := db2.DbConn()
+	if err != nil {
+		return RepositoryResult{Error: err}
+	}
+	pro := db.Where("name like ?","%"+name+"%").Find(&services)
+	if gorm.IsRecordNotFoundError(pro.Error){
+		return RepositoryResult{Error: pro.Error}
+	}
+	return RepositoryResult{Result: &services}
 }

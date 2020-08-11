@@ -88,7 +88,8 @@ func InitRoute() *echo.Echo {
 			service := vet.Group("/service")
 			{
 				service.GET("", ctrlService.FindAll)
-				service.GET("/:id", ctrlService.FindById)
+				service.GET("/id/:id", ctrlService.FindById)
+				service.GET("/search/:name", ctrlService.FindByName)
 				service.POST("", ctrlService.Create)
 				service.PUT("", ctrlService.Update)
 				service.DELETE("/:id", ctrlService.Delete)

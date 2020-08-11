@@ -1,4 +1,4 @@
-package service
+package servicess
 
 import (
 	"docApp/dtos"
@@ -8,11 +8,12 @@ import (
 	"log"
 )
 
-var repoVariety repositories.VarietyRepo
-type VarietyService struct {}
 
-func (*VarietyService) FindById(id string) dtos.Response {
-	operationResult := repoVariety.FindById(id)
+var repoAdmin repositories.AdminRepo
+type AdminService struct {}
+
+func (*AdminService) FindById(id string) dtos.Response {
+	operationResult := repoAdmin.FindById(id)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: "Can't find id"}
@@ -22,24 +23,24 @@ func (*VarietyService) FindById(id string) dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*VarietyService) Create(variety *models.Variety) dtos.Response {
-	operationResult := repoVariety.Create(variety)
+func (*AdminService) Create(user *models.Admin) dtos.Response {
+	operationResult := repoAdmin.Create(user)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
 	}
 
-	var data = operationResult.Result.(*models.Variety)
+	var data = operationResult.Result.(*models.Admin)
 
 	log.Printf("data at file service: %#v", data)
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*VarietyService) FindAll() dtos.Response {
-	operationResult := repoVariety.FindAll()
+func (*AdminService) FindAll() dtos.Response {
+	operationResult := repoAdmin.FindAll()
 
 	if operationResult.Error != nil {
-		fmt.Println("file service variety error")
+		fmt.Println("file service user error")
 		log.Println("File service oiiii")
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
 	}
@@ -50,20 +51,20 @@ func (*VarietyService) FindAll() dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*VarietyService) Update(variety *models.Variety) dtos.Response {
-	operationResult := repoVariety.Update(variety)
+func (*AdminService) Update(user *models.Admin) dtos.Response {
+	operationResult := repoAdmin.Update(user)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: true, Message: "failed update"}
 	}
 
-	var data = operationResult.Result.(*models.Variety)
+	var data = operationResult.Result.(*models.Admin)
 	return dtos.Response{Success: true, Data: data}
 
 }
 
-func (*VarietyService) Delete(id string) dtos.Response {
-	err := repoVariety.Delete(id)
+func (*AdminService) Delete(id string) dtos.Response {
+	err := repoAdmin.Delete(id)
 	if err.Error != nil{
 		return dtos.Response{Success: false, Message: "Failed delete"}
 	}

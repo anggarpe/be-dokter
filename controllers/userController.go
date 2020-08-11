@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"docApp/models"
-	service "docApp/services"
+	service "docApp/servicess"
 	"encoding/json"
 	"github.com/labstack/echo"
 	"io/ioutil"

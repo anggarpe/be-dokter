@@ -11,7 +11,7 @@ type Order struct {
 	ShippedDate *time.Time `json:"shippedDate"`
 	Status string `json:"status"`
 	OrderDate *time.Time `json:"orderDate"`
-	UserID uint `sql:"index" json:"id_user"`
+	UserID uint `sql:"index" json:"-"`
 	User User `json:"user"`
 	OrderDetail []OrderDetail
 }

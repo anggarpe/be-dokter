@@ -45,7 +45,8 @@ func (r *DoctorRepo) FindAll() RepositoryResult {
 		return RepositoryResult{Error: err}
 	}else {
 		var doctors []models.Doctor
-		db.Find(&doctors)
+		db.Preload("Schedule").Find(&doctors)
+		//db.Find(&doctors)
 		return RepositoryResult{Result: doctors}
 	}
 }

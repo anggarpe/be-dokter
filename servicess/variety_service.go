@@ -1,4 +1,4 @@
-package service
+package servicess
 
 import (
 	"docApp/dtos"
@@ -8,11 +8,11 @@ import (
 	"log"
 )
 
-var repoServices repositories.ServiceRepo
-type ServicesService struct {}
+var repoVariety repositories.VarietyRepo
+type VarietyService struct {}
 
-func (*ServicesService) FindById(id string) dtos.Response {
-	operationResult := repoServices.FindById(id)
+func (*VarietyService) FindById(id string) dtos.Response {
+	operationResult := repoVariety.FindById(id)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: "Can't find id"}
@@ -22,24 +22,24 @@ func (*ServicesService) FindById(id string) dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*ServicesService) Create(services *models.Services) dtos.Response {
-	operationResult := repoServices.Create(services)
+func (*VarietyService) Create(variety *models.Variety) dtos.Response {
+	operationResult := repoVariety.Create(variety)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
 	}
 
-	var data = operationResult.Result.(*models.Services)
+	var data = operationResult.Result.(*models.Variety)
 
 	log.Printf("data at file service: %#v", data)
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*ServicesService) FindAll() dtos.Response {
-	operationResult := repoServices.FindAll()
+func (*VarietyService) FindAll() dtos.Response {
+	operationResult := repoVariety.FindAll()
 
 	if operationResult.Error != nil {
-		fmt.Println("file service services error")
+		fmt.Println("file service variety error")
 		log.Println("File service oiiii")
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
 	}
@@ -50,20 +50,20 @@ func (*ServicesService) FindAll() dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*ServicesService) Update(services *models.Services) dtos.Response {
-	operationResult := repoServices.Update(services)
+func (*VarietyService) Update(variety *models.Variety) dtos.Response {
+	operationResult := repoVariety.Update(variety)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: true, Message: "failed update"}
 	}
 
-	var data = operationResult.Result.(*models.Services)
+	var data = operationResult.Result.(*models.Variety)
 	return dtos.Response{Success: true, Data: data}
 
 }
 
-func (*ServicesService) Delete(id string) dtos.Response {
-	err := repoServices.Delete(id)
+func (*VarietyService) Delete(id string) dtos.Response {
+	err := repoVariety.Delete(id)
 	if err.Error != nil{
 		return dtos.Response{Success: false, Message: "Failed delete"}
 	}

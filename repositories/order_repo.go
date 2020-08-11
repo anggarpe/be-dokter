@@ -45,8 +45,7 @@ func (r *OrderRepo) FindAll() RepositoryResult {
 		return RepositoryResult{Error: err}
 	}else {
 		var orders []models.Order
-		db.Preload("User").Find(&orders)
-		db.Preload("OrderDetail").Find(&orders)
+		db.Preload("User").Preload("OrderDetail").Find(&orders)
 		return RepositoryResult{Result: orders}
 	}
 }

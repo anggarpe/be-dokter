@@ -1,21 +1,18 @@
-package service
+package servicess
 
 import (
+	"docApp/dtos"
 	"docApp/models"
+	"docApp/repositories"
 	"fmt"
 	"log"
-
-	"docApp/dtos"
-	"docApp/repositories"
 )
-var repoReservation repositories.ReservationRepo
 
-type ReservationService struct {
-}
+var repoCategory repositories.CategoryRepo
+type CategoryService struct {}
 
-
-func (*ReservationService) FindById(id string) dtos.Response {
-	operationResult := repoReservation.FindById(id)
+func (*CategoryService) FindById(id string) dtos.Response {
+	operationResult := repoCategory.FindById(id)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: "Can't find id"}
@@ -25,31 +22,24 @@ func (*ReservationService) FindById(id string) dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*ReservationService) Create(reservation *models.Reservation) dtos.Response {
-
-	//uuidResult, err := uuid.NewRandom()
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-	//reservation.ID = uuidResult
-
-	operationResult := repoReservation.Create(reservation)
+func (*CategoryService) Create(category *models.Category) dtos.Response {
+	operationResult := repoCategory.Create(category)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
 	}
 
-	var data = operationResult.Result.(*models.Reservation)
+	var data = operationResult.Result.(*models.Category)
 
 	log.Printf("data at file service: %#v", data)
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*ReservationService) FindAll() dtos.Response {
-	operationResult := repoReservation.FindAll()
+func (*CategoryService) FindAll() dtos.Response {
+	operationResult := repoCategory.FindAll()
 
 	if operationResult.Error != nil {
-		fmt.Println("file service reservation error")
+		fmt.Println("file service category error")
 		log.Println("File service oiiii")
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
 	}
@@ -60,20 +50,20 @@ func (*ReservationService) FindAll() dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*ReservationService) Update(reservation *models.Reservation) dtos.Response {
-	operationResult := repoReservation.Update(reservation)
+func (*CategoryService) Update(category *models.Category) dtos.Response {
+	operationResult := repoCategory.Update(category)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: true, Message: "failed update"}
 	}
 
-	var data = operationResult.Result.(*models.Reservation)
+	var data = operationResult.Result.(*models.Category)
 	return dtos.Response{Success: true, Data: data}
 
 }
 
-func (*ReservationService) Delete(id string) dtos.Response {
-	err := repoReservation.Delete(id)
+func (*CategoryService) Delete(id string) dtos.Response {
+	err := repoCategory.Delete(id)
 	if err.Error != nil{
 		return dtos.Response{Success: false, Message: "Failed delete"}
 	}
@@ -81,5 +71,3 @@ func (*ReservationService) Delete(id string) dtos.Response {
 	log.Print("Success Delete")
 	return dtos.Response{Success: true, Message: "Success delete"}
 }
-
-

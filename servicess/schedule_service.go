@@ -1,4 +1,4 @@
-package service
+package servicess
 
 import (
 	"docApp/dtos"
@@ -8,11 +8,11 @@ import (
 	"log"
 )
 
-var repoCategory repositories.CategoryRepo
-type CategoryService struct {}
+var repoSchedule repositories.ScheduleRepo
+type ScheduleService struct {}
 
-func (*CategoryService) FindById(id string) dtos.Response {
-	operationResult := repoCategory.FindById(id)
+func (*ScheduleService) FindById(id string) dtos.Response {
+	operationResult := repoSchedule.FindById(id)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: "Can't find id"}
@@ -22,48 +22,48 @@ func (*CategoryService) FindById(id string) dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*CategoryService) Create(category *models.Category) dtos.Response {
-	operationResult := repoCategory.Create(category)
+func (*ScheduleService) Create(schedule *models.Schedule) dtos.Response {
+	operationResult := repoSchedule.Create(schedule)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
 	}
 
-	var data = operationResult.Result.(*models.Category)
+	var data = operationResult.Result.(*models.Schedule)
 
 	log.Printf("data at file service: %#v", data)
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*CategoryService) FindAll() dtos.Response {
-	operationResult := repoCategory.FindAll()
+func (*ScheduleService) FindAll() dtos.Response {
+	operationResult := repoSchedule.FindAll()
 
 	if operationResult.Error != nil {
-		fmt.Println("file service category error")
+		fmt.Println("file service schedule error")
 		log.Println("File service oiiii")
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
 	}
 
 
 	log.Println("Success get data")
-	var data = operationResult
+	var data = operationResult.Result
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*CategoryService) Update(category *models.Category) dtos.Response {
-	operationResult := repoCategory.Update(category)
+func (*ScheduleService) Update(schedule *models.Schedule) dtos.Response {
+	operationResult := repoSchedule.Update(schedule)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: true, Message: "failed update"}
 	}
 
-	var data = operationResult.Result.(*models.Category)
+	var data = operationResult.Result.(*models.Schedule)
 	return dtos.Response{Success: true, Data: data}
 
 }
 
-func (*CategoryService) Delete(id string) dtos.Response {
-	err := repoCategory.Delete(id)
+func (*ScheduleService) Delete(id string) dtos.Response {
+	err := repoSchedule.Delete(id)
 	if err.Error != nil{
 		return dtos.Response{Success: false, Message: "Failed delete"}
 	}

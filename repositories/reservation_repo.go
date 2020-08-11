@@ -45,8 +45,7 @@ func (r *ReservationRepo) FindAll() RepositoryResult {
 		return RepositoryResult{Error: err}
 	}else {
 		var reservations []models.Reservation
-		db.Preload("User").Find(&reservations)
-		db.Preload("Variety").Find(&reservations)
+		db.Preload("User").Preload("Variety").Find(&reservations)
 		return RepositoryResult{Result: reservations}
 	}
 }

@@ -9,6 +9,7 @@ import (
 type ProductRepo struct {
 	Db *gorm.DB
 }
+var product []models.Product
 
 func NewProductRepo(db *gorm.DB) *ProductRepo {
 	return &ProductRepo{Db: db}
@@ -16,7 +17,6 @@ func NewProductRepo(db *gorm.DB) *ProductRepo {
 
 func (r *ProductRepo) FindById(id string) RepositoryResult {
 	db, err := db2.DbConn()
-	var product []models.Product
 
 	if err != nil{
 		return RepositoryResult{Error: err}
@@ -70,4 +70,38 @@ func (*ProductRepo) Delete(id string) RepositoryResult {
 
 	db.Where("id = ?", id).Delete(&product)
 	return RepositoryResult{Result: db.RowsAffected}
+}
+
+func (*ProductRepo) Search(name string) RepositoryResult {
+	db, err := db2.DbConn()
+	if err != nil {
+		return RepositoryResult{Error: err}
+	}
+	pro := db.Where("name like ?","%"+name+"%").Find(&product)
+	if gorm.IsRecordNotFoundError(pro.Error){
+		return RepositoryResult{Error: pro.Error}
+	}
+	return RepositoryResult{Result: pro}
+}
+
+func (*ProductRepo) FindAllByPrice(min, max float64) RepositoryResult {
+	db, err := db2.DbConn()
+
+	if err != nil {
+		return RepositoryResult{Error: err}
+	}
+
+	db.Where("price >= ? and price <= ?", min, max).Find(&product)
+	return RepositoryResult{Result: product}
+}
+
+func (*ProductRepo) OrderByPriceDsc() RepositoryResult {
+	db, err := db2.DbConn()
+
+	if err != nil {
+		return RepositoryResult{Error: err}
+	}
+
+	db.Order("price desc").Find(&product)
+	return RepositoryResult{Result: product}
 }
