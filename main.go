@@ -6,12 +6,17 @@ import (
 	"fmt"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"os"
 )
 
 func main() {
-	db.DbConn()
+	_, err := db.DbConn()
+	if err != nil{
+		os.Exit(1)
+	}
 	e := routes.InitRoute()
 	fmt.Println("Starting Server...")
+
 
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())

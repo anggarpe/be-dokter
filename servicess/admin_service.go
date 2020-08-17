@@ -32,7 +32,7 @@ func (*AdminService) Create(user *models.Admin) dtos.Response {
 
 	var data = operationResult.Result.(*models.Admin)
 
-	log.Printf("data at file service: %#v", data)
+	//log.Printf("data at file service: %#v", data)
 	return dtos.Response{Success: true, Data: data}
 }
 
@@ -41,7 +41,7 @@ func (*AdminService) FindAll() dtos.Response {
 
 	if operationResult.Error != nil {
 		fmt.Println("file service user error")
-		log.Println("File service oiiii")
+		log.Println("File service nih")
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
 	}
 

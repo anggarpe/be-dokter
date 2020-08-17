@@ -30,14 +30,16 @@ func (*AdminController) Create(c echo.Context) error {
 	b, err := ioutil.ReadAll(c.Request().Body)
 	if err != nil{
 		log.Printf("Failed reading the request body: %s", err)
-		return c.String(http.StatusInternalServerError, "")
+		return c.JSON(http.StatusInternalServerError, err)
 	}
 
 	err = json.Unmarshal(b, &user)
 	if err != nil{
 		log.Printf("Failed Unmarshall in Create User: %s", err)
-		return c.String(http.StatusInternalServerError, "")
+		//return c.String(http.StatusInternalServerError, "")
+		return c.JSON(http.StatusInternalServerError, err)
 	}
+
 
 	res := adminServ.Create(user)
 	log.Printf("User created: %#v", user)

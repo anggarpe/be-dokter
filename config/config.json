@@ -1,8 +1,8 @@
 {
     "DbName":"mysql",
     "DbUser":"root",
-    "DbPassword":"password",
+    "DbPassword":"ooo",
     "DbHost":"127.0.0.1",
-    "DbPort":"3307",
+    "DbPort":"3306",
     "DbSchema":"veterinary_db"
 }
