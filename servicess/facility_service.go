@@ -1,21 +1,18 @@
 package servicess
 
 import (
+	"docApp/dtos"
 	"docApp/models"
+	"docApp/repositories"
 	"fmt"
 	"log"
-
-	"docApp/dtos"
-	"docApp/repositories"
 )
-var repoOrder repositories.OrderRepo
 
-type OrderService struct {
-}
+var repoFacility repositories.FacilityRepo
+type FacilityService struct {}
 
-
-func (*OrderService) FindById(id string) dtos.Response {
-	operationResult := repoOrder.FindById(id)
+func (*FacilityService) FindById(id string) dtos.Response {
+	operationResult := repoFacility.FindById(id)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: "Can't find id"}
@@ -25,31 +22,25 @@ func (*OrderService) FindById(id string) dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*OrderService) Create(order *models.Order) dtos.Response {
-
-	//uuidResult, err := uuid.NewRandom()
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-	//order.ID = uuidResult
-
-	operationResult := repoOrder.Create(order)
+func (*FacilityService) Create(facility *models.Facility) dtos.Response {
+	operationResult := repoFacility.Create(facility)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
 	}
 
-	var data = operationResult.Result.(*models.Order)
+	var data = operationResult.Result.(*models.Facility)
 
 	log.Printf("data at file service: %#v", data)
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*OrderService) FindAll() dtos.Response {
-	operationResult := repoOrder.FindAll()
+func (*FacilityService) FindAll() dtos.Response {
+	operationResult := repoFacility.FindAll()
 
 	if operationResult.Error != nil {
-		fmt.Println("file service order error")
+		fmt.Println("file service facility error")
+		log.Println("File service oiiii")
 		return dtos.Response{Success: false, Message: operationResult.Error.Error()}
 	}
 
@@ -59,20 +50,20 @@ func (*OrderService) FindAll() dtos.Response {
 	return dtos.Response{Success: true, Data: data}
 }
 
-func (*OrderService) Update(order *models.Order) dtos.Response {
-	operationResult := repoOrder.Update(order)
+func (*FacilityService) Update(facility *models.Facility) dtos.Response {
+	operationResult := repoFacility.Update(facility)
 
 	if operationResult.Error != nil {
 		return dtos.Response{Success: true, Message: "failed update"}
 	}
 
-	var data = operationResult.Result.(*models.Order)
+	var data = operationResult.Result.(*models.Facility)
 	return dtos.Response{Success: true, Data: data}
 
 }
 
-func (*OrderService) Delete(id string) dtos.Response {
-	err := repoOrder.Delete(id)
+func (*FacilityService) Delete(id string) dtos.Response {
+	err := repoFacility.Delete(id)
 	if err.Error != nil{
 		return dtos.Response{Success: false, Message: "Failed delete"}
 	}
@@ -80,5 +71,3 @@ func (*OrderService) Delete(id string) dtos.Response {
 	log.Print("Success Delete")
 	return dtos.Response{Success: true, Message: "Success delete"}
 }
-
-

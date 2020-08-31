@@ -1,7 +1,7 @@
 package main
 
 import (
-	"docApp/db"
+	"docApp/script"
 	"docApp/routes"
 	"fmt"
 	"github.com/labstack/echo"
@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	_, err := db.DbConn()
+	_, err := script.DbConn()
 	if err != nil{
 		os.Exit(1)
 	}

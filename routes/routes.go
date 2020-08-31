@@ -3,7 +3,22 @@ package routes
 import (
 	"docApp/controllers"
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 )
+
+
+
+//custom middleware
+//add some header
+func ServerHeader(next echo.HandlerFunc) echo.HandlerFunc{
+	return func(c echo.Context) error{
+		c.Response().Header().Set(echo.HeaderServer,"Veterinary/1.0")
+		c.Response().Header().Set("Tujuan","Nambah Portofolio")
+		return next(c)
+	}
+}
+
+
 
 func InitRoute() *echo.Echo {
 	e := echo.New()
@@ -17,8 +32,51 @@ func InitRoute() *echo.Echo {
 	var ctrlService controllers.ServiceController
 	var ctrlOrder controllers.OrderController
 	var ctrlReservation controllers.ReservationController
+	var ctrlFacility controllers.FacilityController
+
+	//tes cookie login
+	var ctrlLogin controllers.LoginController
+	cookieGrp := e.Group("/cookie")
+	e.GET("/login", ctrlLogin.Login)
+	//cookieGrp.Use(ctrlLogin.CheckCookie)
+	cookieGrp.GET("/main", ctrlAdmin.FindAll)
+
+	//jwt
+	jwtGroup := e.Group("/jwt")
+	//use jwt at endpoin
+	jwtGroup.Use(middleware.JWTWithConfig(middleware.JWTConfig{
+		SigningMethod: "HS512",
+		SigningKey: []byte("mySecret"),
+	}))
+	//jwtGroup.GET("/main", ctrlLogin.MainJwt)
+	jwtGroup.GET("/main", ctrlAdmin.FindAll)
+
+
 
 	v1 := e.Group("/api")
+
+	v1.Use(ServerHeader)
+	//log server interaction
+	v1.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: `[${time_rfc3339}]  ${status}  ${method}  ${host}${path} ${latency_human}`+"\n",
+	}))
+
+	//TODO: config jwt
+	//v1.Use(middleware.JWTWithConfig(middleware.JWTConfig{
+	//	SigningMethod: "HS512",
+	//	SigningKey: []byte("mySecret"),
+	//	//custom authorized
+	//	TokenLookup: "cookie:JwtCookie",
+	//}))
+
+	//basic auth middleware
+	//v1.Use(middleware.BasicAuth(func(username, password string, c echo.Context) (bool, error) {
+	//	if username == "joko" && password == "jane"{
+	//		return true, nil
+	//	}
+	//	return false, nil
+	//}))
+
 	{
 		vet := v1.Group("/veterinary")
 		{
@@ -112,7 +170,17 @@ func InitRoute() *echo.Echo {
 				reservation.PUT("", ctrlReservation.Update)
 				reservation.DELETE("/:id", ctrlReservation.Delete)
 			}
+
+			facility := vet.Group("/facility")
+			{
+				facility.GET("", ctrlFacility.FindAll)
+				facility.GET("/:id", ctrlFacility.FindById)
+				facility.POST("", ctrlFacility.Create)
+				facility.PUT("", ctrlFacility.Update)
+				facility.DELETE("/:id", ctrlFacility.Delete)
+			}
 		}
 	}
 	return e
 }
+

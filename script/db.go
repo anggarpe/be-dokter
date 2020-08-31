@@ -1,4 +1,4 @@
-package db
+package script
 
 import (
 	"docApp/config"

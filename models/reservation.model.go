@@ -10,5 +10,4 @@ type Reservation struct {
 	Needs string `gorm:"type:text" json:"needs"`
 	UserID uint `json:"-"`
 	User User `json:"user"`
-	Variety []Variety `gorm:"many2many:reservation_variety" json:"variety"`
 }

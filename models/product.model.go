@@ -7,6 +7,6 @@ type Product struct {
 	Stock int32 `gorm:"type:int" json:"stock"`
 	Description string `gorm:"type:text" json:"description"`
 	CategoryID uint `sql:"index" json:"-"`
-	Category Category `json:"category"`
+	Category Category `gorm:"association_autoupdate:false" json:"category"`
 	OrderDetail []OrderDetail `json:"-"`
 }

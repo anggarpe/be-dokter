@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	db2 "docApp/db"
+	db2 "docApp/script"
 	"docApp/models"
 	"github.com/jinzhu/gorm"
 )
@@ -45,7 +45,8 @@ func (r *ProductRepo) FindAll() RepositoryResult {
 		return RepositoryResult{Error: err}
 	}else {
 		var product []models.Product
-		db.Find(&product)
+		//db.Find(&product)
+		db.Preload("Category").Find(&product)
 		return RepositoryResult{Result: product}
 	}
 }

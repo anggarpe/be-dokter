@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	db2 "docApp/db"
+	db2 "docApp/script"
 	"docApp/models"
 	"github.com/jinzhu/gorm"
 )
